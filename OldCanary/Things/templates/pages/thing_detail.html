@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% csrf_token %}
+    <div class="row-fluid">
+        <div class="span6">
+            {% crispy form "bootstrap4" %}
+        </div>
+        <div class="span6">
+            <h4>Filters:</h4><br>{% crispy filter.form 'bootstrap4' %}
+        </div>
+    </div>
+    <script>
+            var searchForm = $("#search-form");
+            searchForm.find("input").change(function () {
+                searchForm.submit();
+            });
+            searchForm.find("select").change(function () {
+                searchForm.submit();
+            });
+            var kg = $("#id_is_known_good").selectize({
+                plugins: ['remove_button'],
+                closeAfterSelect: true,
+            });
+    </script>
+    {% render_table table "django_tables2/bootstrap4.html" %}
+{% endblock content %}

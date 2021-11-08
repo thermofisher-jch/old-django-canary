@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="container p-3 my-3 bg-light border border-dark rounded" style="width:35%">
+  <h2>Would you like a Klondike Bar?</h2>
+  <form method="post">
+  <div>
+    {% csrf_token %} {{ form|crispy }}
+    <input type="submit" value="Submit" />
+  </div>
+  </form>
+</div>
+{% endblock %}

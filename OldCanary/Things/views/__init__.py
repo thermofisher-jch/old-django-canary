@@ -1,0 +1,3 @@
+from thing_detail_view import ThingDetailView
+from thing_create_view import ThingCreateView
+from things_list_view import ThingsListView
