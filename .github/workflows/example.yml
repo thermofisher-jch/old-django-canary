@@ -18,3 +18,5 @@ jobs:
           add_comment: true
           # optional - defaults to true
           add_status: true
+          # optional - Defaults to Redhat Developer Sandbox
+          web_ide_insance: https://codeready-codeready-workspaces.csd-k8s-demo-0cc5678638ed51c2a34ed6691df3acb6-0000.us-south.containers.appdomain.cloud
