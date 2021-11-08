@@ -1,0 +1,90 @@
+apiVersion: 1.0.0
+metadata:
+  generateName: django-example-
+projects:
+  - name: old-django-canary
+    source:
+      location: 'https://github.com/thermofisher-jch/old-django-canary'
+      type: git
+components:
+  - id: ms-python/python/latest
+    type: chePlugin
+  - id: eclipse/che-machine-exec-plugin/latest
+    type: chePlugin
+  - id: redhat/vscode-openshift-connector/latest
+    type: chePlugin
+  - id: ms-vscode/vscode-github-pullrequest/latest
+    type: chePlugin
+  - mountSources: true
+    endpoints:
+      - name: django
+        port: 7000
+    memoryLimit: 512Mi
+    type: dockerimage
+    volumes:
+      - name: venv
+        containerPath: '${HOME}/.venv'
+    alias: python
+    image: 'docker.io/jheinnic/che-python-2.7:afdcd09'
+  - mountSources: false
+    endpoints:
+      - name: postgresql
+        port: 5432
+    memoryLimit: 512Mi
+    type: dockerimage
+    volumes:
+      - name: postgres-db
+        containerPath: /var/lib/postgresql
+    alias: postgres
+    image: 'postgres:11.4-alpine'
+  - id: vscode/typescript-language-features/latest
+    type: chePlugin
+  - id: redhat/vscode-xml/latest
+    type: chePlugin
+  - id: redhat/vscode-yaml/latest
+    type: chePlugin
+commands:
+  - name: install dependencies
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate && pip install -r requirements.txt && pip install ptvsd'
+        component: python
+  - name: migrate
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate && python manage.py migrate'
+        component: python
+  - name: run server
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate && export DEBUG_MODE=False && python manage.py runserver 0.0.0.0:7000'
+        component: python
+  - name: run server in debug mode
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate &&  export DEBUG_MODE=True && python manage.py runserver 0.0.0.0:7000 --noreload --nothreading'
+        component: python
+  - name: debug
+    actions:
+      - referenceContent: |
+          { "version": "0.2.0", "configurations": [
+            {
+              "name": "Python: Remote Attach",
+              "type": "python",
+              "request": "attach",
+              "port": 5678,
+              "host": "0.0.0.0",
+              "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "${workspaceFolder}"
+                }
+              ]
+            }]
+          }
+        type: vscode-launch
+

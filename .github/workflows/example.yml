@@ -1,0 +1,20 @@
+name: Try in Web IDE example
+on:
+  pull_request_target:
+    # Triggers workflow on pull request open
+    types: [opened, reopened, synchronize]
+jobs:
+  add-link:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Web IDE Pull Request Check
+        id: try-in-web-ide
+        uses: redhat-actions/try-in-web-ide@v1
+        with:
+          # GitHub action inputs
+          # required
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # optional - defaults to true
+          add_comment: true
+          # optional - defaults to true
+          add_status: true
