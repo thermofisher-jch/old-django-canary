@@ -1,6 +1,6 @@
 apiVersion: 1.0.0
 metadata:
-  generateName: django-example-
+  name: django-example-33be3
 projects:
   - name: old-django-canary
     source:
@@ -23,7 +23,7 @@ components:
     type: dockerimage
     volumes:
       - name: venv
-        containerPath: '${HOME}/.venv'
+        containerPath: '/home/user/.venv'
     alias: python
     image: 'docker.io/jheinnic/che-python-2.7:afdcd09'
   - mountSources: false
@@ -46,28 +46,52 @@ components:
 commands:
   - name: install dependencies
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+      - workdir: '${CHE_PROJECTS_ROOT}/'
         type: exec
-        command: '. ${HOME}/.venv/bin/activate && pip install -r requirements.txt && pip install ptvsd'
+        command: '. /home/user/.venv/bin/activate && pip install -r requirements.txt && pip install ptvsd'
         component: python
   - name: migrate
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary'
         type: exec
-        command: '. ${HOME}/.venv/bin/activate && python manage.py migrate'
+        command: '. /home/user/.venv/bin/activate && python manage.py migrate'
         component: python
   - name: run server
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary'
         type: exec
-        command: '. ${HOME}/.venv/bin/activate && export DEBUG_MODE=False && python manage.py runserver 0.0.0.0:7000'
+        command: '. /home/user/.venv/bin/activate && export DEBUG_MODE=False && python manage.py runserver 0.0.0.0:7000'
         component: python
   - name: run server in debug mode
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/django-realworld-example-app'
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary'
+        type: exec
+        command: '. /home/user/.venv/bin/activate &&  export DEBUG_MODE=True && python manage.py runserver 0.0.0.0:7000 --noreload --nothreading'
+        component: python
+  - name: Alt install dependencies
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate && pip install -r requirements.txt && pip install ptvsd'
+        component: vscode_python
+  - name: Alt migrate
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate && python manage.py migrate'
+        component: vscode_python
+  - name: Alt run server
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate && export DEBUG_MODE=False && python manage.py runserver 0.0.0.0:7000'
+        component: vscode_python
+  - name: Alt run server in debug mode
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary'
         type: exec
         command: '. ${HOME}/.venv/bin/activate &&  export DEBUG_MODE=True && python manage.py runserver 0.0.0.0:7000 --noreload --nothreading'
-        component: python
+        component: vscode_python
   - name: debug
     actions:
       - referenceContent: |
