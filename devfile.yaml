@@ -47,8 +47,6 @@ components:
         containerPath: /var/lib/postgresql
     alias: postgres-svc
     image: 'postgres:11.4-alpine'
-  - id: redhat/vscode-yaml/latest
-    type: chePlugin
 commands:
   - name: install dependencies
     actions:
