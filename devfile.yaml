@@ -1,11 +1,13 @@
 apiVersion: 1.0.0
 metadata:
   generateName: django-example-
+attributes:
+  persistVolumes: 'true'
 projects:
   - name: old-django-canary
     source:
-      location: 'https://github.com/thermofisher-jch/old-django-canary'
-      type: git
+      location: 'ssh://git@github.com/thermofisher-jch/old-django-canary.git'
+      type: github
 components:
   - id: ms-python/python/latest
     type: chePlugin
@@ -27,7 +29,12 @@ components:
     alias: vscode-xml
   - mountSources: true
     endpoints:
-      - name: django
+      - attributes:
+          public: 'true'
+          discoverable: 'false'
+          protcol: http
+          secure: 'false'
+        name: django
         port: 7000
     memoryLimit: 512Mi
     type: dockerimage
@@ -36,9 +43,31 @@ components:
         containerPath: /home/user/.venv
     alias: django-svc
     image: 'docker.io/jheinnic/che-python-2.7:afdcd09'
+    env:
+      - value: /home/user
+        name: HOME
+      - value: dbowner
+        name: DATABASE_USERNAME
+      - value: abcd1234
+        name: DATABASE_PASSWORD
+      - value: old-canary
+        name: DATABASE_DBNAME
+      - value: postgresql
+        name: DATABASE_HOST
+      - value: '5432'
+        name: DATABASE_PORT
+      - value: 'True'
+        name: DEBUG
+      - value: '*'
+        name: ALLOWED_HOSTS
+      - value: 4ThispocketIconic8lyP@rkedIns!de0utpublic
+        name: SECRET_KEY
   - mountSources: false
     endpoints:
-      - name: postgresql
+      - attributes:
+          discoverable: 'true'
+          public: 'false'
+        name: postgresql
         port: 5432
     memoryLimit: 512Mi
     type: dockerimage
@@ -47,18 +76,35 @@ components:
         containerPath: /var/lib/postgresql
     alias: postgres-svc
     image: 'postgres:11.4-alpine'
+    env:
+      - value: dbowner
+        name: POSTGRES_USER
+      - value: abcd1234
+        name: POSTGRES_PASSWORD
+      - value: old-canary
+        name: POSTGRES_DBNAME
+      - value: '5432'
+        name: POSTGRES_PORT
+  - id: redhat/vscode-yaml/latest
+    type: chePlugin
 commands:
   - name: install dependencies
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary/OldCanary'
         type: exec
-        command: '. ${HOME}/.venv/bin/activate && pip install -r requirements.txt && pip install ptvsd'
+        command: '. ${HOME}/.venv/bin/activate && pip install -r requirements.txt'
         component: django-svc
   - name: migrate
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary/OldCanary'
         type: exec
         command: '. ${HOME}/.venv/bin/activate && python manage.py migrate'
+        component: django-svc
+  - name: make migrations 1
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/old-django-canary/OldCanary'
+        type: exec
+        command: '. ${HOME}/.venv/bin/activate && python manage.py makemigrations'
         component: django-svc
   - name: run server
     actions:
@@ -92,5 +138,5 @@ commands:
               ]
             }]
           }
-        type: "vscode-launch"
+        type: vscode-launch
 
