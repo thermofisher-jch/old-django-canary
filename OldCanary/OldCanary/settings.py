@@ -63,12 +63,12 @@ WSGI_APPLICATION = "OldCanary.wsgi.application"
 # HOST Note!!! this is defined by the name of the docker container which is running postgres
 DATABASES = {
     "default": {
-        "NAME": "old-canary",
+        "NAME": os.getenv("DATABASE_DBNAME", "old-canary"),
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "USER": os.getenv("DATABASE_USERNAME", "canary"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD", "tweet"),
-        "HOST": "postgres",
-        "PORT": "5432",
+        "HOST": os.getenv("DATABASE_HOST", "postgres"),
+        "PORT": os.getenv("DATABASE_PORT", "5432"),
     }
 }
 
