@@ -91,7 +91,7 @@ commands:
                 }
               ]
             }
-          ]
+          ],
           "type": "vscode-launch"
         }
 
