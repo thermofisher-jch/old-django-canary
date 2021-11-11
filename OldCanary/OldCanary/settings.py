@@ -63,7 +63,8 @@ WSGI_APPLICATION = "OldCanary.wsgi.application"
 # HOST Note!!! this is defined by the name of the docker container which is running postgres
 DATABASES = {
     "default": {
-        "NAME": os.getenv("DATABASE_DBNAME", "old-canary"),
+        "NAME": "old-canary",
+        # "NAME": os.getenv("DATABASE_DBNAME", "old-canary"),
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "USER": os.getenv("DATABASE_USERNAME", "canary"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD", "tweet"),
@@ -143,18 +144,13 @@ CELERY_RESULT_SERIALIZER = "pickle"
 SITE_ROOT = os.path.dirname(os.path.dirname(__file__))
 
 
-VERSION = "1.8.1-rc.2"
+VERSION = "0.0.1-rc.1"
 try:
     # Allows contextual override of displayed version tag
     with open("/var/lib/inspector/version", "r") as fd:
         VERSION = fd.read()
 except IOError as e:
     pass
-
-RAVEN_CONFIG = {
-    "dsn": "http://d8a6a72730684575afc834c95ebbdc60:1e5b396140654efd9b3361401f530204@sentry.itw//11",
-    "release": VERSION,
-}
 
 try:
     from local_version import *
