@@ -90,8 +90,7 @@ commands:
                     "remoteRoot": "${workspaceFolder}/OldCanary"
                 }
               ]
-            }
-          ],
-          "type": "vscode-launch"
-        }
+            }]
+          }
+        type: "vscode-launch"
 
