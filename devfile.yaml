@@ -36,7 +36,7 @@ components:
           secure: 'false'
         name: django
         port: 7000
-    memoryLimit: 512Mi
+    memoryLimit: 1536Mi
     type: dockerimage
     volumes:
       - name: venv
@@ -52,7 +52,7 @@ components:
         name: DATABASE_PASSWORD
       - value: old-canary
         name: DATABASE_DBNAME
-      - value: postgresql
+      - value: postgres
         name: DATABASE_HOST
       - value: '5432'
         name: DATABASE_PORT
@@ -62,6 +62,8 @@ components:
         name: ALLOWED_HOSTS
       - value: 4ThispocketIconic8lyP@rkedIns!de0utpublic
         name: SECRET_KEY
+      - name: PYTHONPATH
+        value: ${CHE_PROJECTS_ROOT}/old-django-canary/OldCanary;/home/user/.local/lib/python2.7/site-packages
   - mountSources: false
     endpoints:
       - attributes:
@@ -69,7 +71,7 @@ components:
           public: 'false'
         name: postgresql
         port: 5432
-    memoryLimit: 512Mi
+    memoryLimit: 1536Mi
     type: dockerimage
     volumes:
       - name: postgres-db
