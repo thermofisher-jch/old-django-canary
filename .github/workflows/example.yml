@@ -21,4 +21,4 @@ jobs:
           # optional - Redirect to IBM Bluemix Cluster
           web_ide_instance: https://codeready-codeready-workspaces.csd-k8s-demo-0cc5678638ed51c2a34ed6691df3acb6-0000.us-south.containers.appdomain.cloud/
           # optional - Vanity
-          comment_badge: https://img.shields.io/badge/Eclipse_Che-Hosted%20by%20JCH-2F8CD16?logo=eclipse-che&labelColor=FE193E
+          comment_badge: https://img.shields.io/badge/Eclipse_Che-Hosted%20by%20JCH-8DA996?logo=eclipse-che&labelColor=D2395E
