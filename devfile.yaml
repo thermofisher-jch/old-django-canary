@@ -74,26 +74,25 @@ commands:
         type: exec
         command: '. ${HOME}/.venv/bin/activate &&  export DEBUG_MODE=True && python manage.py runserver 0.0.0.0:7000 --noreload --nothreading'
         component: django-svc
-  - name: debug
-    actions:
-      - referenceContent: |
-          { 
-            "version": "0.2.0", 
-            "configurations": [
-            {
-              "name": "Python: Remote Attach",
-              "type": "python",
-              "request": "attach",
-              "port": 5678,
-              "host": "0.0.0.0",
-              "pathMappings": [
-                {
-                    "localRoot": "${workspaceFolder}/OldCanary",
-                    "remoteRoot": "${workspaceFolder}/OldCanary"
-                }
-              ]
-            }
-          ]
-          "type": "vscode-launch"
-        }
-
+#  - name: debug
+#    actions:
+#      - referenceContent: |
+#          { 
+#            "version": "0.2.0", 
+#            "configurations": [
+#            {
+#             "name": "Python: Remote Attach",
+#             "type": "python",
+#             "request": "attach",
+#             "port": 5678,
+#             "host": "0.0.0.0",
+#             "pathMappings": [
+#               {
+#                   "localRoot": "${workspaceFolder}/OldCanary",
+#                   "remoteRoot": "${workspaceFolder}/OldCanary"
+#               }
+#             ]
+#           }
+#         ]
+#         "type": "vscode-launch"
+#       }
