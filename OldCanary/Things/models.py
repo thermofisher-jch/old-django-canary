@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Thing(models.Model):
+    id = models.AutoField(auto_created=False, verbose_name="Id", primary_key=True)
     name = models.CharField(max_length=128)
     rank = models.CharField(max_length=1)
     suit = models.CharField(max_length=1, null=True)
